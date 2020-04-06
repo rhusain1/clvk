@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - ci-cts
   pull_request:
 
 jobs:
@@ -213,3 +214,27 @@ jobs:
           ${{ env.builddir }}/clspv${{ env.exe-ext }} -output-format=bc -o simple.bc ./tests/simple-from-llvm-ir-binary/simple.cl
           ${{ env.testbindir }}/simple_test_from_llvm_ir_binary${{ env.exe-ext }}
           ${{ env.testbindir }}/simple_test_from_llvm_ir_binary_static${{ env.exe-ext }}
+      - name: Download CTS artifacts
+        if: ${{ matrix.compiler-available && matrix.android-abi == '' }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build-cts.yml
+          workflow_conclusion: success
+          name: cts-${{ runner.os }}
+          path: cts
+      - name: CTS tests
+        if: ${{ matrix.compiler-available && matrix.android-abi == '' }}
+        shell: bash
+        run: |
+          set -ex
+          ls -l ${{ github.workspace }}/build
+          ls -l ${{ github.workspace }}/cts
+          chmod +x ${{ github.workspace }}/cts//test_*
+          export LD_LIBRARY_PATH=${{ github.workspace }}/build
+          export DYLD_LIBRARY_PATH=${{ github.workspace }}/build
+          export CLVK_LOG=3
+          echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+          ./tests/conformance/run-conformance.py \
+            --test-set=quick \
+            --reference-results=./tests/conformance/results-swiftshader.json \
+            --cts-install-dir=${{ github.workspace }}/cts
