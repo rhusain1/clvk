@@ -227,14 +227,14 @@ jobs:
         shell: bash
         run: |
           set -ex
-          ls -l ${{ github.workspace }}/build
-          ls -l ${{ github.workspace }}/cts
-          chmod +x ${{ github.workspace }}/cts//test_*
-          export LD_LIBRARY_PATH=${{ github.workspace }}/build
-          export DYLD_LIBRARY_PATH=${{ github.workspace }}/build
+          ls -l '${{ github.workspace }}'/build
+          ls -l '${{ github.workspace }}'/cts
+          chmod +x '${{ github.workspace }}'/cts//test_*
+          export LD_LIBRARY_PATH='${{ github.workspace }}'/build
+          export DYLD_LIBRARY_PATH='${{ github.workspace }}'/build
           export CLVK_LOG=3
           echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
           ./tests/conformance/run-conformance.py \
             --test-set=quick \
             --reference-results=./tests/conformance/results-swiftshader.json \
-            --cts-install-dir=${{ github.workspace }}/cts
+            --cts-install-dir='${{ github.workspace }}'/cts
