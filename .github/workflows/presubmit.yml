@@ -227,6 +227,7 @@ jobs:
         shell: bash
         run: |
           set -ex
+          ls -l '${{ github.workspace }}'
           ls -l '${{ github.workspace }}'/build
           ls -l '${{ github.workspace }}'/cts
           chmod +x '${{ github.workspace }}'/cts//test_*
