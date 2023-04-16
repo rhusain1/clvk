@@ -1,5 +1,5 @@
 name: Build CTS
-on: [workflow_dispatch]
+on: [push,workflow_dispatch]
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
           git clone --depth 1 https://github.com/KhronosGroup/OpenCL-ICD-Loader.git
       - name: Fetch CTS
         run: |
-          git clone --depth 1 https://github.com/KhronosGroup/OpenCL-CTS.git
+          git clone -b clvk --depth 1 https://github.com/kpet/OpenCL-CTS.git
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:

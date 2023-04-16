@@ -227,12 +227,11 @@ jobs:
         shell: bash
         run: |
           set -ex
-          ls -l '${{ github.workspace }}'
-          ls -l '${{ github.workspace }}'/build
+          ls -l '${{ env.builddir }}'/install
           ls -l '${{ github.workspace }}'/cts
           chmod +x '${{ github.workspace }}'/cts//test_*
-          export LD_LIBRARY_PATH='${{ github.workspace }}'/build
-          export DYLD_LIBRARY_PATH='${{ github.workspace }}'/build
+          export LD_LIBRARY_PATH='${{ env.builddir }}'/install
+          export DYLD_LIBRARY_PATH='${{ env.builddir }}'/install
           export CLVK_LOG=3
           echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
           ./tests/conformance/run-conformance.py \

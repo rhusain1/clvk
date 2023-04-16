@@ -175,6 +175,7 @@ def run_conformance_binary(path, testargs, args):
     import pprint
     pprint.pprint(os.environ)
     os.environ['LD_LIBRARY_PATH'] = args.opencl_lib_dir
+    os.environ['DYLD_LIBRARY_PATH'] = args.opencl_lib_dir
     p = subprocess.Popen(
         [path] + testargs,
         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
