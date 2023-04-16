@@ -170,6 +170,8 @@ def run_conformance_binary(path, testargs, args):
     if args.vulkan_loader_json_path:
         print("Using ICD JSON: " + args.vulkan_loader_json_path)
         os.environ['VK_ICD_FILENAMES'] = args.vulkan_loader_json_path
+    if os.name == 'nt':
+        path += '.exe'
     print(path)
     os.environ['VK_LOADER_DEBUG'] = 'all'
     import pprint
@@ -249,6 +251,7 @@ def run_tests(args):
 def check_reference(results, reference, args):
     print("")
     print("Difference w.r.t. reference results:")
+    has_diff = False
     for name in sorted(results):
         # Skip checking if there is no reference
         if not name in reference:
@@ -291,10 +294,14 @@ def check_reference(results, reference, args):
 
         # Print differences if any
         if msgs:
+            has_diff = True
             print("\t{}".format(name))
             for msg in msgs:
                 print("\t\t{}".format(msg))
-            return False
+    if has_diff:
+        return False
+    else:
+        print("\tNone.")
         return True
 
 def report(results, args):
