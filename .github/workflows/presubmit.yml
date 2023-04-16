@@ -229,6 +229,7 @@ jobs:
           set -ex
           ls -l '${{ env.builddir }}'/install
           ls -l '${{ github.workspace }}'/cts
+          cp -v '${{ env.builddir }}'/install/* '${{ github.workspace }}'/cts/
           chmod +x '${{ github.workspace }}'/cts//test_*
           export LD_LIBRARY_PATH='${{ env.builddir }}'/install
           export DYLD_LIBRARY_PATH='${{ env.builddir }}'/install
